@@ -8,7 +8,7 @@ Unobtrusive Contact Form Umbraco 9  and 10
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 
-2) Add the View Model, The Controler and the Contact Partial files
+2) Add the View Model, The Controler and the Contact Partial and the ContactMessageSentPartial
 
 3) In the Contact form View add a Using to the Models and pass the Model in to the partial:
 
