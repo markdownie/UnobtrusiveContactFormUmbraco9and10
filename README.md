@@ -18,3 +18,5 @@ Unobtrusive Contact Form Umbraco 9  and 10
 
 
 ToDo:  ADD RECAPTCHA
+
+1) Install via nuget AspNetCore.ReCaptcha
