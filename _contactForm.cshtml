@@ -1,0 +1,48 @@
+@using NES.WebTeam.NDP.CMS.Controllers
+@using AspNetCore.ReCaptcha
+@model MyApp.ContactFormViewModel
+
+@if (TempData["success"] == null)
+{
+    <div class="sectionTitle">
+        <h2>How can we help you?</h2>
+    </div>
+
+    @using (Html.BeginUmbracoForm<ContactFormController>(nameof(ContactFormController.Submit)))
+    {
+
+
+        <div class="col-lg-4">
+            <div class="">
+                <label asp-for="Name" class="form-label requiredLabel"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name"></span>
+            </div>
+
+            <div class="mt-4">
+                <label asp-for="Email" class="form-label requiredLabel"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email"></span>
+            </div>
+
+          
+        </div>
+
+        <div class="col-lg-6 mt-4">
+            <label asp-for="Message" class="form-label requiredLabel"></label>
+            <p>Please don’t include personal information such as names or locations</p>
+            <textarea asp-for="Message" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Message"></span>
+        </div>
+
+        <p class="mt-3 mb-3"><a href="/legal-and-site-information/privacy/" target="_blank">What we do with your personal data.</a></p>
+
+        
+        <input type="submit" name="Submit" value="Send message" class="btn btn-primary m-0 mt-4" />
+
+    }
+}
+else
+{
+    @Html.Partial("ContactMessageSent")
+}
