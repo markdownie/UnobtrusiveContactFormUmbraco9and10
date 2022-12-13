@@ -1,0 +1,66 @@
+using Microsoft.AspNetCore.Mvc;
+using MyApp.Models;
+using System;
+using System.Net.Mail;
+using Umbraco.Cms.Core.Cache;
+using Umbraco.Cms.Core.Logging;
+using Umbraco.Cms.Core.Routing;
+using Umbraco.Cms.Core.Services;
+using Umbraco.Cms.Core.Web;
+using Umbraco.Cms.Infrastructure.Persistence;
+using Umbraco.Cms.Web.Website.Controllers;
+using AspNetCore.ReCaptcha;
+
+
+namespace NES.WebTeam.NDP.CMS.Controllers
+{
+    public class ContactFormController : SurfaceController
+    {
+        public ContactFormController(
+            IUmbracoContextAccessor umbracoContextAccessor,
+            IUmbracoDatabaseFactory databaseFactory,
+            ServiceContext services,
+            AppCaches appCaches,
+            IProfilingLogger profilingLogger,
+            IPublishedUrlProvider publishedUrlProvider)
+            : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
+        { }
+
+       /* [ValidateReCaptcha(ErrorMessage = "Please answer the recaptcha challenge.")] */
+        [HttpPost]
+        public IActionResult Submit(ContactFormViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return CurrentUmbracoPage();
+            }
+
+            MailMessage mail = new MailMessage();
+
+            mail.From = new MailAddress(model.Email);
+
+            mail.To.Add("*********");
+           
+
+            mail.Subject = "Query from site";
+            mail.IsBodyHtml = false;
+
+            mail.Body = "You just got a contact email:\n \n"
+                + "\n \n From name: " + model.Name
+                + "\n \n From email: " + model.Email
+                + "\n \n Message: " + model.Message;
+
+            SmtpClient smtp = new SmtpClient();
+
+            // TO DO: Replace with enviroment variables
+            smtp.Host = "smtp.sendgrid.net";
+            smtp.Credentials = new System.Net.NetworkCredential("apikey", "******");
+            smtp.EnableSsl = true;
+            //smtp.Port = 587;
+
+            smtp.Send(mail);
+            TempData["success"] = true;
+            return RedirectToCurrentUmbracoPage();
+        }
+    }
+}
